@@ -17,7 +17,11 @@ public:
 	// Sets default values for this actor's properties
 	AEnemyManager();
 
-
+	//타이머를 이용해 Enemy생성할 함수
+	void CreateEnemy();
+	//타이머를 만들기 위한 구조체
+	UPROPERTY()
+	FTimerHandle createTimer;
 
 protected:
 	// Called when the game starts or when spawned

@@ -9,6 +9,9 @@
 #include <Blueprint/UserWidget.h>
 #include "CPP_ShootingGameModeBase.generated.h"
 
+//델리게이트 만들기
+DECLARE_DELEGATE_OneParam(FPlayingStateDelegate,float value)
+
 //총알 오브젝트풀을 위한 속성 선언
 //필요속성 : 탄창크기, 탄창(오브젝트풀), 총알공장
 
@@ -18,6 +21,7 @@
 UENUM(BluePrintType)//BluePrintType을 넣으면 BP에서 쓸수있다
 enum class EGameState : uint8
 {
+	
 	// 0부터 순서대로 할당 (중간에 숫자를 크게바꾸면 그다음 숫자는 전숫자의 +1)
 	Ready UMETA(ThisPlayName = "READY_STATE"), 
 	Playing UMETA(ThisPlayName = "Playing_STATE"),
@@ -30,6 +34,12 @@ class CPP_SHOOTING_API ACPP_ShootingGameModeBase : public AGameModeBase
 
 public:
 	ACPP_ShootingGameModeBase();
+
+	FPlayingStateDelegate OnPlayingStateDelegate;
+
+	UFUNCTION()
+	void PlayingProcess(float value);
+
 	//게임이 초기화 될 때 호출됨
 	//GameMode가 제공해주는 함수(Begin보다 먼저호출)
 	virtual void InitGameState() override;
