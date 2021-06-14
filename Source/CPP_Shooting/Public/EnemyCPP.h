@@ -17,13 +17,11 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Component")
 	class UBoxComponent* boxComp;
 	UPROPERTY(VisibleAnywhere, Category = "Component")
-		class UStaticMeshComponent* meshComp;
+	class UStaticMeshComponent* meshComp;
+	//EnemyComponent 추가
+	UPROPERTY(VisibleAnywhere, Category = "Component")
+	class UEnemyMove* enemyMove;
 
-	//필요속성 : 타겟
-	UPROPERTY()
-	class AActor* target;
-	UPROPERTY()
-	FVector dir;
 	//폭발효과
 	UPROPERTY(EditDefaultsOnly,Category="Setting")
 	class UParticleSystem* explosionFactory;
