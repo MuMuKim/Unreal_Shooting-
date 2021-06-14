@@ -13,7 +13,7 @@
 APlayerCPP::APlayerCPP()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	// BoxComponent 추가하기
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));

@@ -7,6 +7,7 @@
 #include "EnemyCPP.h"
 #include <Math/UnrealMathUtility.h>
 #include <GameFramework/Actor.h>
+#include "CPP_ShootingGameModeBase.h"
 
 // Sets default values for this component's properties
 UEnemyMove::UEnemyMove()
@@ -70,7 +71,6 @@ void UEnemyMove::BeginPlay()
 	
 }
 
-
 // Called every frame
 void UEnemyMove::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -90,9 +90,45 @@ void UEnemyMove::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 	dir.Normalize();
 
 	FVector v = dir * 500;
-
+	//선생니
 	FVector P0 = me->GetActorLocation();
 	FVector P = P0 + v * DeltaTime;
 	me->SetActorLocation(P, true);
+}
+
+void UEnemyMove::OnCollisionEnter(AActor* OtherActor)
+{
+	//폭발효과 생성
+	//뒤부터 ->나의 Transform에서 ex를 인스턴스를 월드상에 시켜라
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFactory,
+		me->GetActorTransform());
+	//폭발효과 Sound
+	UGameplayStatics::PlaySound2D(GetWorld(), explosionSound);
+
+	//부딪힌 Actor가 Bullet일 경우 탄창에 다시 넣어주자
+	//bullet 변수안에 otherActor(닿은액터)를 Bullet타입으로 형변환시킨다.
+	auto gameMode = Cast<ACPP_ShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+	auto bullet = Cast<ABulletCPP>(OtherActor);
+	if (bullet) //Bullet이 맞다면
+	{
+		//Bullet을 원래 자리로 넣어준다
+		gameMode->AddBullet(bullet);
+	}
+	else
+	{
+		//부딪힌녀석이 Player면 
+		auto player = Cast<APlayerCPP>(OtherActor);
+		if (player)
+		{
+			//GameOver을 실행하고싶다
+			gameMode->SetState(EGameState::GameOver);
+		}
+		OtherActor->Destroy(); //너죽고
+	}
+
+	//점수를 올려주자
+	gameMode->SetCurrentScore(gameMode->GetCurrentScore() + 1);
+
+	me->Destroy(); //나죽자 this생략
 }
 
