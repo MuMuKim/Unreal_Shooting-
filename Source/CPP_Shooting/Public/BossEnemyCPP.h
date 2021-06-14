@@ -41,6 +41,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "BulletFactory")
 	TSubclassOf<class ABossBulletCPP> bulletFactory;
 
+	//쉴드공장
+	UPROPERTY(EditDefaultsOnly, Category = "ShieldFactory")
+	TSubclassOf<class ABossShieldCPP> shieldFactory;
+
+	//나선공격 공장
+	UPROPERTY(EditDefaultsOnly, Category = "HelixFactory")
+	TSubclassOf<class ABossHelixCPP> helixFactory;
+
 	//폭발공장
 	UPROPERTY(EditDefaultsOnly, Category = "Explosion")
 	class UParticleSystem* expolsionFactory;
@@ -55,4 +63,5 @@ private:
 	float createTime = 5;
 	//맞은 횟수
 	int32 point = 0;
+	
 };

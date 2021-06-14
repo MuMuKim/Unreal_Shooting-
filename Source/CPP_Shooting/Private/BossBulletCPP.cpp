@@ -8,6 +8,7 @@
 #include "PlayerCPP.h"
 #include <EngineUtils.h>
 #include "BossEnemyCPP.h"
+#include <Math/UnrealMathUtility.h>
 
 ABossBulletCPP::ABossBulletCPP()
 {
@@ -51,6 +52,8 @@ void ABossBulletCPP::BeginPlay()
 		}
 	}*/
 	
+	// 흘러간시간 * 속력 = 속도
+	theta += GetWorld()->RealTimeSeconds * 5;
 }
 
 // 1.일정시간이 되면 Player방향으로 Bullet을 연속으로 5발을 쏘고싶다
@@ -64,8 +67,8 @@ void ABossBulletCPP::BeginPlay()
 // ->일정시간이 되면
 void ABossBulletCPP::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-
+	
+	
 	//이동 P = P0 + vt
 	SetActorLocation(GetActorLocation() + dir * speed * DeltaTime, true);
 

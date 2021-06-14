@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BossBulletCPP.generated.h"
+#include "BossShieldCPP.generated.h"
 
 UCLASS()
-class CPP_SHOOTING_API ABossBulletCPP : public AActor
+class CPP_SHOOTING_API ABossShieldCPP : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABossBulletCPP();
+	ABossShieldCPP();
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,21 +23,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
 public:
 	//몸체
 	UPROPERTY(EditAnywhere,Category = "Component")
-	class UBoxComponent* boxComp;
+	class USphereComponent* spComp;
 	//외관
 	UPROPERTY(EditAnywhere, Category = "Component")
 	class UStaticMeshComponent* meshComp;
 	//총알속도
 	float speed = 1000;
-	//방향
-	FVector dir;
-	//타겟
-	UPROPERTY()
-	class AActor* target;
 
 	//------ 
 	//속도
@@ -47,6 +41,4 @@ public:
 	//boss
 	UPROPERTY()
 	class ABossEnemyCPP* boss;
-	//나선 반지름
-	float helix = 150;
 };

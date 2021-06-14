@@ -53,10 +53,10 @@ void UPlayerMove::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 	//----------------------------------
 	//Player을 제자리에서 Yal축으로 돌게 만들고싶다
 	//R = R0 + rt
-	FRotator r = FRotator(0, 1, 0) * 500; //방향 * 속도
-	FRotator R0 = me->GetActorRotation(); //현재 방향
-	FRotator R = R0 + r * DeltaTime; // R = R0 + rt
-	me->SetActorRotation(R); // 방향회전
+	//FRotator r = FRotator(0, 1, 0) * 500; //방향 * 속도
+	//FRotator R0 = me->GetActorRotation(); //현재 방향
+	//FRotator R = R0 + r * DeltaTime; // R = R0 + rt
+	//me->SetActorRotation(R); // 방향회전
 }
 
 void UPlayerMove::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

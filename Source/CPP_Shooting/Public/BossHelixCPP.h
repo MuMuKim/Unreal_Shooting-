@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BossBulletCPP.generated.h"
+#include "BossHelixCPP.generated.h"
 
 UCLASS()
-class CPP_SHOOTING_API ABossBulletCPP : public AActor
+class CPP_SHOOTING_API ABossHelixCPP : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABossBulletCPP();
+	ABossHelixCPP();
 
 protected:
 	// Called when the game starts or when spawned
@@ -22,7 +22,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 
 public:
 	//¸öÃ¼

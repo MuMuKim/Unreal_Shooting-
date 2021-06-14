@@ -10,6 +10,10 @@
 #include "CPP_ShootingGameModeBase.h"
 #include "BulletCPP.h"
 #include <Kismet/GameplayStatics.h>
+#include <EngineUtils.h>
+#include "BossShield.h"
+#include "BossShieldCPP.h"
+#include "BossHelixCPP.h"
 
 
 ABossEnemyCPP::ABossEnemyCPP()
@@ -41,10 +45,13 @@ void ABossEnemyCPP::BeginPlay()
 	boxComp->OnComponentHit.AddDynamic(this, &ABossEnemyCPP::OnColliderEnter);
 }
 
-// Called every frame
+// 1 게임이 시작되면 2초간 방어막 생성
+// 2 방어막이 지워진 후 3초간 레이저 발사
+// 3 레이저 발사 후 2초 뒤 3초간 나선공격 
 void ABossEnemyCPP::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	auto gameMode = Cast<ACPP_ShootingGameModeBase>(GetWorld()->GetAuthGameMode());
 	//Playing모드가 아닐시 리턴
 	if (gameMode->GetState() != EGameState::Playing)
@@ -54,9 +61,28 @@ void ABossEnemyCPP::Tick(float DeltaTime)
 	//현재시간
 	currentTime += DeltaTime;
 	//현재시간이 경과시간을 초과하면
-	if (currentTime /2 && currentTime > 5 )
+	if (currentTime / 2)
 	{
-		if (bulletFactory)
+		//방어막
+		if (shieldFactory)
+		{
+			//생성될때 오브젝트가 겹쳐도 가능하게
+			FActorSpawnParameters pram;
+			pram.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+			//총구위치에서 총알공장에서 만들어진 총알을 발사
+			GetWorld()->SpawnActor<ABossShieldCPP>(shieldFactory, firePosition->GetComponentLocation(), firePosition->GetComponentRotation(), pram);
+			//현재시간 초기화
+			if (currentTime > 2)
+			{
+				for (TActorIterator<ABossShieldCPP> it(GetWorld()); it; ++it)
+				{
+					it->Destroy();
+				}
+			}
+		}
+		//레이저발사
+		if (bulletFactory && currentTime >= 3)
 		{
 			//생성될때 오브젝트가 겹쳐도 가능하게
 			FActorSpawnParameters pram;
@@ -65,12 +91,40 @@ void ABossEnemyCPP::Tick(float DeltaTime)
 			//총구위치에서 총알공장에서 만들어진 총알을 발사
 			GetWorld()->SpawnActor<ABossBulletCPP>(bulletFactory, firePosition->GetComponentLocation(), firePosition->GetComponentRotation(), pram);
 			//현재시간 초기화
-			if (currentTime > 7)
+			if (currentTime > 6)
 			{
-				currentTime = 0;
+				for (TActorIterator<ABossBulletCPP> it(GetWorld()); it; ++it)
+				{
+					it->Destroy();
+				}
+			}
+		}
+		//나선공격 발사
+		if (helixFactory && currentTime >= 8)
+		{
+			//생성될때 오브젝트가 겹쳐도 가능하게
+			FActorSpawnParameters pram;
+			pram.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+			//총구위치에서 총알공장에서 만들어진 총알을 발사
+			GetWorld()->SpawnActor<ABossHelixCPP>(helixFactory, firePosition->GetComponentLocation(), firePosition->GetComponentRotation(), pram);
+			//현재시간 초기화
+			if (currentTime > 11)
+			{
+				for (TActorIterator<ABossHelixCPP> it(GetWorld()); it; ++it)
+				{
+					it->Destroy();
+					if (currentTime > 13)
+					{
+						currentTime = 0;
+					}
+				}
 			}
 		}
 	}
+
+	//test 이동
+	//SetActorLocation(GetActorLocation() + FVector(0, 0, -1) * 100 * DeltaTime);
 }
 
 void ABossEnemyCPP::OnColliderEnter(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
