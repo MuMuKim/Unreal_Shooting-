@@ -8,6 +8,8 @@
 #include "CPP_ShootingGameModeBase.h"
 #include "PlayerCPP.h"
 #include "EnemyMove.h"
+#include "EnemyFire.h"
+#include "EnemyBulletCPP.h"
 
 
 // Sets default values
@@ -29,6 +31,16 @@ AEnemyCPP::AEnemyCPP()
 
 	//EnemyMove Component 추가
 	enemyMove = CreateDefaultSubobject<UEnemyMove>(TEXT("EnemyMove"));
+	//EnemyMove Component 추가
+	enemyFire = CreateDefaultSubobject<UEnemyFire>(TEXT("EnemyFire"));
+
+	//총알을 로드해서 붙여주자 (Editor에서 BP_EnemyBullet을 복사해서 붙여주고, 끝에 _C를 붙여줘야 클래스로 받아와짐)
+	//BP에서 Factory에 할당말고 코드에서 로드해 할당하는방법
+	ConstructorHelpers::FClassFinder<AEnemyBulletCPP> tempBullet(TEXT("Blueprint'/Game/BluePrint/BP_EnemyBullet.BP_EnemyBullet_c'"));
+	if (tempBullet.Succeeded())
+	{
+		enemyFire->bulletFactory = tempBullet.Class;
+	}
 }
 
 // Called when the game starts or when spawned

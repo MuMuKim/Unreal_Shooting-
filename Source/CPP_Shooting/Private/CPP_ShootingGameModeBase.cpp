@@ -24,6 +24,7 @@ ACPP_ShootingGameModeBase::ACPP_ShootingGameModeBase()
 
 void ACPP_ShootingGameModeBase::PlayingProcess(float value)
 {
+	//순서5
 	//Start UI를 꺼준다
 	startUI->RemoveFromViewport();
 	curruntTime = value;
@@ -135,7 +136,7 @@ void ACPP_ShootingGameModeBase::BeginPlay() //실행순서 = 1
 {
 	Super::BeginPlay(); // 다른액터들의 Begin을 호출하기 때문에 부모의 Begin을 호출해줘야함
 
-	//함수 델리게이트와 연결 처리할대상(this) 오브젝트와 함수를 연결해주는 의미
+	//함수 델리게이트와 연결 처리할대상(this(ex.Player가 될수도 있다)) 오브젝트와 함수를 연결해주는 의미 순서3
 	OnPlayingStateDelegate.BindUObject(this, &ACPP_ShootingGameModeBase::PlayingProcess);
 
 	//방어코드 (총알 공장 주소가 있다면)
@@ -264,6 +265,7 @@ void ACPP_ShootingGameModeBase::PlayingPage()
 	// 현재시간이 경과시간 이상이 된다면
 	if (curruntTime >= 1)
 	{
+		//델리게이트 호출 순서4
 		OnPlayingStateDelegate.ExecuteIfBound(0);
 	}
 }

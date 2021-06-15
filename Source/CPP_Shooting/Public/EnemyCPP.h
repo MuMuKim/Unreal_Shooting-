@@ -21,6 +21,11 @@ public:
 	//EnemyComponent 추가
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
 	class UEnemyMove* enemyMove;
+	//EnemyComponent 추가
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Component")
+	class UEnemyFire* enemyFire;
+
+	
 
 public:	
 	// Sets default values for this actor's properties

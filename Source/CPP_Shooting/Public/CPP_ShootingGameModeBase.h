@@ -9,7 +9,7 @@
 #include <Blueprint/UserWidget.h>
 #include "CPP_ShootingGameModeBase.generated.h"
 
-//델리게이트 만들기
+//델리게이트 만들기 순서1
 DECLARE_DELEGATE_OneParam(FPlayingStateDelegate,float value)
 
 //총알 오브젝트풀을 위한 속성 선언
@@ -35,8 +35,8 @@ class CPP_SHOOTING_API ACPP_ShootingGameModeBase : public AGameModeBase
 public:
 	ACPP_ShootingGameModeBase();
 
+	//델리게이트를 사용할 변수와, 델리게이트를 이용해 위임받을 함수 순서2
 	FPlayingStateDelegate OnPlayingStateDelegate;
-
 	UFUNCTION()
 	void PlayingProcess(float value);
 
