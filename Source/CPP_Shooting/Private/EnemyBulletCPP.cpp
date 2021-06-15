@@ -4,6 +4,10 @@
 #include "EnemyBulletCPP.h"
 #include <Components/SphereComponent.h>
 #include <Components/StaticMeshComponent.h>
+#include "CPP_ShootingGameModeBase.h"
+#include "BulletCPP.h"
+#include <Kismet/GameplayStatics.h>
+#include "PlayerCPP.h"
 
 // Sets default values
 AEnemyBulletCPP::AEnemyBulletCPP()
@@ -39,3 +43,23 @@ void AEnemyBulletCPP::Tick(float DeltaTime)
 	SetActorLocation(GetActorLocation() + FVector(0, 0, -1) * 800 * DeltaTime);
 }
 
+void AEnemyBulletCPP::OnCollisionEnter(AActor* OtherActor)
+{
+	//폭발효과 생성
+	//뒤부터 ->나의 Transform에서 ex를 인스턴스를 월드상에 시켜라
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFactory,GetActorTransform());
+	//폭발효과 Sound
+	UGameplayStatics::PlaySound2D(GetWorld(), explosionSound);
+
+	//부딪힌녀석이 Player면 
+	auto player = Cast<APlayerCPP>(OtherActor);
+	if (player) //Bullet이 맞다면
+	{
+		//GameOver을 실행하고싶다
+		auto gameMode = Cast<ACPP_ShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+		gameMode->SetState(EGameState::GameOver);
+	}
+	
+	OtherActor->Destroy(); //너죽고
+	Destroy(); //나죽자 this생략
+}

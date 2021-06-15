@@ -30,6 +30,4 @@ public:
 	//°øÀå
 	UPROPERTY(EditDefaultsOnly, Category = "BulletClass")
 	TSubclassOf<class AEnemyBulletCPP> bulletFactory;
-
-		
 };

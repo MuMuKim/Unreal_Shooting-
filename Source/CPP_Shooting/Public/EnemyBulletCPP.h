@@ -29,4 +29,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Code")
+	void OnCollisionEnter(AActor* OtherActor);
+
+	//Æø¹ßÈ¿°ú
+	UPROPERTY(EditDefaultsOnly,Category="Setting")
+	class UParticleSystem* explosionFactory;
+	//Æø¹ßÈ¿°ú Sound
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundBase* explosionSound;
 };

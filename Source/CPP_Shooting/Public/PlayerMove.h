@@ -41,7 +41,7 @@ public:
 	float vertical = 0;
 
 	UPROPERTY(EditAnywhere, Category="Speed")
-	float spped = 500;
+	float spped = 1000;
 
 	//이 컴포넌트를 소유하고 있는 액터 객체
 	UPROPERTY()
